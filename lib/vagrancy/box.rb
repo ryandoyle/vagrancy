@@ -1,3 +1,5 @@
+require 'json'
+
 module Vagrancy
   class Box
 
@@ -11,27 +13,26 @@ module Vagrancy
 
     def save
       raise 'box already exists' if exists?
-      filestore.save 
+      @filestore.write(filename, to_json)
     end
 
     def exists?
-      filestore.exists? "#{Vagrancy.data_path}/#{@group}/#{@name}.json"
+      @filestore.exists? filename 
     end
 
-    def to_json_string
-      "foops"
+    def filename
+      "#{@group}/#{@name}.json"
     end
 
-    private
+    private 
 
-    def description
-      raise 'description not set' unless @description
-      @description
-    end
-
-    def short_description
-      raise 'short_description not set' unless @short_description
-      @short_description
+    def to_json
+      { 
+        :description => "#{description}",
+        :short_description => "#{short_description}",
+        :name => "#{@group}/#{@name}",
+        :versions => []
+      }.to_json
     end
 
   end
