@@ -22,6 +22,15 @@ describe Vagrancy::Filestore do
     end
   end
 
+  describe '#read' do
+    it 'delegates reads to File module' do
+      expect(File).to receive(:read).with('/root/file.txt')
+
+      filestore.read('file.txt')
+    end
+  end
+
+
   describe '#write' do
     
     describe 'parent directories' do

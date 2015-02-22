@@ -18,6 +18,10 @@ module Vagrancy
       end
     end
 
+    def read(file)
+      File.read("#{@base_path}#{file}")
+    end
+
 
     private
 
