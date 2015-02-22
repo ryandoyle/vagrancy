@@ -21,6 +21,15 @@ module Vagrancy
       status 201
     end
 
+    put '/api/v1/box/:group/:box' do
+      project_root = File.expand_path(File.dirname(__FILE__) + '/../../')
+      @filestore = Filestore.new("#{project_root}/data/")
+      box = JSONBoxAdapter.new(params[:box], params[:group], request.body.read, @filestore).new_box
+      box.update
+      status 200
+    end
+
+
     # Create a new version
     post '/api/v1/box/:group/:box/:version' do
       

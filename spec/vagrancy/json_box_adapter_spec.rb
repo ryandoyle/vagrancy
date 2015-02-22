@@ -18,8 +18,6 @@ describe Vagrancy::JSONBoxAdapter do
   describe '#new_box' do
     before do
       allow(Vagrancy::Box).to receive(:new).and_return(box) 
-      allow(box).to receive(:description=)
-      allow(box).to receive(:short_description=)
     end
 
     it 'creates a new Vagrancy::Box with the correct name' do
@@ -28,22 +26,22 @@ describe Vagrancy::JSONBoxAdapter do
       adapter.new_box
     end
     it 'creates a new Vagrancy::Box with the correct group' do
-      expect(Vagrancy::Box).to receive(:new).with(anything, "mygroup", anything).and_return(box)
+      expect(Vagrancy::Box).to receive(:new).with(anything, "mygroup", any_args).and_return(box)
 
       adapter.new_box
     end
     it 'creates a new Vagrancy::Box with a filestore' do
-      expect(Vagrancy::Box).to receive(:new).with(anything, anything, filestore).and_return(box)
+      expect(Vagrancy::Box).to receive(:new).with(anything, anything, filestore, anything).and_return(box)
 
       adapter.new_box
     end
-    it 'sets the description of the created box' do
-      expect(box).to receive(:description=).with("Box_description")
+    it 'creates a new Vagrancy::Box with a description' do
+      expect(Vagrancy::Box).to receive(:new).with(anything, anything, anything, :description => 'Box_description', :short_description => anything).and_return(box)
 
       adapter.new_box
     end
-    it 'sets the short description of the box' do
-      expect(box).to receive(:short_description=).with("This is my Vagrant box.")
+    it 'creates a new Vagrancy::Box with a short_description' do
+      expect(Vagrancy::Box).to receive(:new).with(anything, anything, anything, :description => anything, :short_description => 'This is my Vagrant box.').and_return(box)
 
       adapter.new_box
     end

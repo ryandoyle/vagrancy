@@ -3,16 +3,22 @@ require 'json'
 module Vagrancy
   class Box
 
-    def initialize(name, group, filestore)
+    def initialize(name, group, filestore, opts = {})
       @name = name
       @group = group
       @filestore = filestore
+      @description = opts[:description]
+      @short_description = opts[:short_description]
     end
     
-    attr_accessor :name, :group, :description, :short_description 
+    attr_reader :name, :group, :description, :short_description 
 
     def save
       raise 'box already exists' if exists?
+      @filestore.write(filename, to_json)
+    end
+
+    def update
       @filestore.write(filename, to_json)
     end
 

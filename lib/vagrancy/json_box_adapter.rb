@@ -13,10 +13,9 @@ module Vagrancy
     end
 
     def new_box
-      box = Vagrancy::Box.new(@name, @group, @filestore)
-      box.description = description
-      box.short_description = short_description
-      box
+      Vagrancy::Box.new(@name, @group, @filestore, 
+                        :description => description, 
+                        :short_description => short_description)
     end
 
     private
