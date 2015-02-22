@@ -14,7 +14,7 @@ module Vagrancy
     # Safely writes by locking
     def write(file, content)
       with_parent_directory_created(file) do 
-        safely_write(file, content)
+        transactionally_write(file, content)
       end
     end
 
@@ -27,18 +27,26 @@ module Vagrancy
       yield
     end
 
-    def safely_write(file, content)
+    def transactionally_write(file, content)
+      within_file_lock(file) do
+        begin 
+          transaction_file = File.open("#{@base_path}#{file}.txn", File::RDWR|File::CREAT, 0644)
+          transaction_file.write(content)
+          transaction_file.flush
+          FileUtils.mv(transaction_file.path, "#{@base_path}#{file}")
+        ensure
+          transaction_file.close
+          File.unlink("#{@base_path}#{file}.txn") if File.exists?("#{@base_path}#{file}.txn")
+        end
+      end
+    end
+
+    def within_file_lock(file)
       begin
         write_lock = File.open("#{@base_path}#{file}.lock", File::RDWR|File::CREAT, 0644)
         write_lock.flock(File::LOCK_EX)
-
-        transaction_file = File.open("#{@base_path}#{file}.txn", File::RDWR|File::CREAT, 0644)
-        transaction_file.write(content)
-        transaction_file.flush
-        FileUtils.mv(transaction_file.path, "#{@base_path}#{file}")
+        yield
       ensure 
-        transaction_file.close
-        File.unlink("#{@base_path}#{file}.txn") if File.exists?("#{@base_path}#{file}.txn")
         write_lock.close
       end
     end

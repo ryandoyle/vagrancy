@@ -27,7 +27,7 @@ describe Vagrancy::Filestore do
     describe 'parent directories' do
 
       before do 
-        allow(filestore).to receive(:safely_write)
+        allow(filestore).to receive(:transactionally_write)
       end
 
       it 'created if required' do
