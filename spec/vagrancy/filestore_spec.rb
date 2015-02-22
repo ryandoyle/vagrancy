@@ -10,15 +10,10 @@ describe Vagrancy::Filestore do
   let(:write_lock) { double 'transaction_file' }
 
   describe '#exists?' do
-    it "is false for a file that doesn't exist" do 
-      allow(File).to receive(:exists?).and_return false
+    it "delegates to File.exists?" do
+      expect(File).to receive(:exists?).with('/root/file_that_doesnt_exist.txt').and_return false
 
       expect(filestore.exists?("file_that_doesnt_exist.txt")).to be false
-    end
-    it "is true for a file that exists" do 
-      allow(File).to receive(:exists?).and_return true
-
-      expect(filestore.exists?("file_that_exists.txt")).to be true
     end
   end
 

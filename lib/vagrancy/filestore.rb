@@ -8,7 +8,7 @@ module Vagrancy
     end
 
     def exists?(file)
-      File.exists? file
+      File.exists?("#{@base_path}#{file}")
     end
 
     # Safely writes by locking
