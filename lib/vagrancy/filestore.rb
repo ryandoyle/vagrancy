@@ -11,6 +11,12 @@ module Vagrancy
       File.exists?("#{@base_path}#{file}")
     end
 
+    def directories_in(path)
+      Dir.glob("#{@base_path}#{path}/*").select {|d| File.directory? d}.collect do |entry|
+        File.basename entry
+      end
+    end
+
     # Safely writes by locking
     def write(file, content)
       with_parent_directory_created(file) do 

@@ -1,17 +1,18 @@
 require 'json'
 
+require 'vagrancy/box_versions'
+
 module Vagrancy
   class Box
 
-    def initialize(name, group, filestore, opts = {})
+    def initialize(name, group, filestore, request)
       @name = name
       @group = group
       @filestore = filestore
-      @description = opts[:description]
-      @short_description = opts[:short_description]
+      @request = request
     end
     
-    attr_reader :name, :group, :description, :short_description 
+    attr_reader :name, :group
 
     def save
       raise 'box already exists' if exists?
@@ -26,18 +27,18 @@ module Vagrancy
       @filestore.exists? filename 
     end
 
-    def filename
-      "#{@group}/#{@name}.json"
+    def path
+      "#{@group}/#{@name}"
     end
 
-    private 
+    def filename
+      "#{path}/box.json"
+    end
 
     def to_json
       { 
-        :description => "#{description}",
-        :short_description => "#{short_description}",
         :name => "#{@group}/#{@name}",
-        :versions => []
+        :versions => BoxVersions.new(self, @filestore, @request).to_a
       }.to_json
     end
 

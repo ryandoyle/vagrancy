@@ -17,6 +17,14 @@ describe Vagrancy::Filestore do
     end
   end
 
+  describe '#list' do
+    it 'returns a list of contents of a directory' do
+      allow(Dir).to receive(:glob).with('/root/dir/*').and_return ['/root/dir/1', '/root/dir/2']
+
+      expect(filestore.list("dir")).to eq ['1', '2']
+    end
+  end
+
   describe '#read' do
     it 'delegates reads to File module' do
       expect(File).to receive(:read).with('/root/file.txt')
