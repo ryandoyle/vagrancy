@@ -128,6 +128,15 @@ describe Vagrancy::Filestore do
         expect{filestore.write('file.json', 'mycontent')}.to raise_error
       end
 
+      it 'always removes the lock file if it exists' do
+        allow(transaction_file).to receive(:write).and_raise 'error in cleanup'
+        allow(File).to receive(:exists?).with('/root/file.json.lock').and_return true
+
+        expect(File).to receive(:unlink).with('/root/file.json.lock')
+        expect{filestore.write('file.json', 'mycontent')}.to raise_error
+
+      end
+
     end
   end
 

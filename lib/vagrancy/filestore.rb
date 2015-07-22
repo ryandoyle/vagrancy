@@ -58,6 +58,7 @@ module Vagrancy
         yield
       ensure 
         write_lock.close
+        File.unlink("#{@base_path}#{file}.lock") if File.exists?("#{@base_path}#{file}.lock")
       end
     end
 
