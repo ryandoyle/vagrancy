@@ -12,27 +12,12 @@ module Vagrancy
       @request = request
     end
     
-    attr_reader :name, :group
-
-    def save
-      raise 'box already exists' if exists?
-      @filestore.write(filename, to_json)
-    end
-
-    def update
-      @filestore.write(filename, to_json)
-    end
-
     def exists?
-      @filestore.exists? filename 
+      @filestore.exists? path
     end
 
     def path
       "#{@group}/#{@name}"
-    end
-
-    def filename
-      "#{path}/box.json"
     end
 
     def to_json

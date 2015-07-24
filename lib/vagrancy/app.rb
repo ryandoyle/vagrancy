@@ -1,7 +1,6 @@
 require 'sinatra/base'
 
 require 'vagrancy/filestore'
-require 'vagrancy/atlas_box_adapter'
 require 'vagrancy/upload_path_handler'
 require 'vagrancy/box'
 require 'vagrancy/provider_box'
@@ -47,21 +46,13 @@ module Vagrancy
       status 200
     end
 
-    post '/api/v1/artifacts' do
-      box = AtlasBoxAdapter.new(request.body.read, filestore).box
-      box.save
-      status 201
-    end
-
     post '/api/v1/artifacts/:username/:name/vagrant.box' do
       UploadPathHandler.new(params[:name], params[:username], request).to_json
     end
 
     get '/api/v1/artifacts/:username/:name' do
-      box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
-
-      status box.exists? ? 200 : 404
-      box.to_json if box.exists?
+      status 200
+      { :artifact => { :username => params[:username], :name => params[:name] }}.to_json
     end
 
     def filestore 
