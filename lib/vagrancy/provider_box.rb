@@ -1,11 +1,12 @@
 module Vagrancy
   class ProviderBox
 
-    def initialize(provider, parent, filestore, request)
+    def initialize(provider, version, box, filestore, request)
       @provider = provider
-      @parent = parent
+      @box = box
       @filestore = filestore
       @request = request
+      @version = version
     end
 
     def to_h
@@ -33,7 +34,7 @@ module Vagrancy
     end
 
     def path
-      @parent.path + '/' + @provider + '/box'
+      @box.path + '/' + @version + '/' + @provider + '/box'
     end
 
   end

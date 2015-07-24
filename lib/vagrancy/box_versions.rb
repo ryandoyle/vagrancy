@@ -10,18 +10,14 @@ module Vagrancy
 
 
     def to_a
-       versions.collect { |v| v.to_h }
-    end
-
-    def path
-      @parent.path
+       versions.select{ |v| v.exists? }.collect { |v| v.to_h }
     end
 
     private 
 
     def versions
-      @filestore.directories_in(path).collect do |version|
-        BoxVersion.new(version, self, @filestore, @request)
+      @filestore.directories_in(@parent.path).collect do |version|
+        BoxVersion.new(version, @parent, @filestore, @request)
       end
     end
 

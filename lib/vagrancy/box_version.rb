@@ -12,14 +12,19 @@ module Vagrancy
       { :version => @version, :providers => providers.collect { |p| p.to_h } } 
     end
 
+    def exists?
+      providers.any? { |p| p.exists? }
+    end
+
+    private 
+
     def path
       @parent.path + '/' + @version
     end
 
     def providers
-      @filestore.directories_in(path).collect do |provider|
-        puts provider
-        ProviderBox.new(provider, self, @filestore, @request)
+      @providers ||= @filestore.directories_in(path).collect do |provider|
+        ProviderBox.new(provider, @version, @parent, @filestore, @request)
       end
     end
 

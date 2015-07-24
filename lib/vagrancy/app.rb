@@ -3,7 +3,8 @@ require 'sinatra/base'
 require 'vagrancy/filestore'
 require 'vagrancy/atlas_box_adapter'
 require 'vagrancy/upload_path_handler'
-require 'vagrancy/provider_handler'
+require 'vagrancy/box'
+require 'vagrancy/provider_box'
 
 module Vagrancy
   class App < Sinatra::Base
@@ -18,15 +19,19 @@ module Vagrancy
     end
 
     put '/:username/:name/:version/:provider/box' do
-      handler = ProviderHandler.new(params[:name], params[:username], params[:version], params[:provider], filestore, request)
-      handler.write(request.body.read)
+      box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
+      provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
+
+      provider_box.write(request.body.read)
       status 201
     end
 
     get '/:username/:name/:version/:provider/box' do
-      handler = ProviderHandler.new(params[:name], params[:username], params[:version], params[:provider], filestore, request)
-      response.write(handler.read) if handler.box_exists?
-      status handler.box_exists? ? 200 : 404
+      box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
+      provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
+
+      response.write(provider_box.read) if provider_box.exists?
+      status provider_box.exists? ? 200 : 404
     end
 
     # Atlas emulation, no authentication
