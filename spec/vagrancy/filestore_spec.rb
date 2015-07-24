@@ -17,11 +17,14 @@ describe Vagrancy::Filestore do
     end
   end
 
-  describe '#list' do
-    it 'returns a list of contents of a directory' do
-      allow(Dir).to receive(:glob).with('/root/dir/*').and_return ['/root/dir/1', '/root/dir/2']
+  describe '#directories_in' do
+    it 'returns a relative list of directories in a directory' do
+      allow(Dir).to receive(:glob).with('/root/dir/*').and_return ['/root/dir/1', '/root/dir/2', '/root/dir/file.txt']
+      allow(File).to receive(:directory?).with('/root/dir/1').and_return true
+      allow(File).to receive(:directory?).with('/root/dir/2').and_return true
+      allow(File).to receive(:directory?).with('/root/dir/file.txt').and_return false
 
-      expect(filestore.list("dir")).to eq ['1', '2']
+      expect(filestore.directories_in("dir")).to eq ['1', '2']
     end
   end
 
