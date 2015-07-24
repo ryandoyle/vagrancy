@@ -4,6 +4,7 @@ require 'vagrancy/filestore'
 require 'vagrancy/upload_path_handler'
 require 'vagrancy/box'
 require 'vagrancy/provider_box'
+require 'vagrancy/dummy_artifact'
 
 module Vagrancy
   class App < Sinatra::Base
@@ -55,7 +56,7 @@ module Vagrancy
     get '/api/v1/artifacts/:username/:name' do
       status 200
       content_type 'application/json'
-      { :artifact => { :username => params[:username], :name => params[:name] }}.to_json
+      DummyArtifact.new(params).to_json
     end
 
     def filestore 
