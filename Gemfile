@@ -3,7 +3,7 @@ gem 'sinatra'
 
 group :development do 
   gem 'rspec'
-  gem 'thin'
   gem 'shotgun'
+  gem 'puma'
   gem 'guard-rspec', :require => false
 end
