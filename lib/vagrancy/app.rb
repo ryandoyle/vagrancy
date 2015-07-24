@@ -14,6 +14,7 @@ module Vagrancy
       box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
 
       status box.exists? ? 200 : 404
+      content_type 'application/json'
       box.to_json if box.exists?
     end
 
@@ -47,11 +48,13 @@ module Vagrancy
     end
 
     post '/api/v1/artifacts/:username/:name/vagrant.box' do
+      content_type 'application/json'
       UploadPathHandler.new(params[:name], params[:username], request).to_json
     end
 
     get '/api/v1/artifacts/:username/:name' do
       status 200
+      content_type 'application/json'
       { :artifact => { :username => params[:username], :name => params[:name] }}.to_json
     end
 
