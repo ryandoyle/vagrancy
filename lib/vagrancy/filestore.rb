@@ -28,6 +28,10 @@ module Vagrancy
       File.read("#{@base_path}#{file}")
     end
 
+    def delete(file)
+      File.unlink("#{@base_path}#{file}")
+    end
+
 
     private
 

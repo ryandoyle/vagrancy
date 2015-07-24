@@ -21,6 +21,10 @@ module Vagrancy
       @filestore.read(path)
     end
 
+    def delete
+      @filestore.delete(path) if exists?
+    end
+
     def exists?
       @filestore.exists?(path)
     end

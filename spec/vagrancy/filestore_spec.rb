@@ -36,6 +36,14 @@ describe Vagrancy::Filestore do
     end
   end
 
+  describe '#delete' do
+    it 'delegates deletes to the File module' do
+      expect(File).to receive(:unlink).with('/root/file.txt')
+
+      filestore.delete('file.txt')
+    end
+  end
+
 
   describe '#write' do
     
