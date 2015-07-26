@@ -8,6 +8,8 @@ module Vagrancy
       path_maybe_no_traling_slash + (path_maybe_no_traling_slash[-1] == '/' ? '' : '/')
     end
 
+    private
+
     def path_maybe_no_traling_slash
       from_configuration_file || default
     end
