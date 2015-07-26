@@ -6,30 +6,32 @@ describe Vagrancy::Box do
 
   let(:name) { "boxname" }
   let(:group) { "boxgroup" }
-  let(:filestore) { double('filestore') }
-  let(:description) { 'my description' }
-  let(:short_description) { 'short desc' }
-  let(:box) { described_class.new(name,group,filestore, :description => description, :short_description => short_description)  }
+  let(:filestore) { double('Filestore') }
+  let(:request) { double('SinatraRequest') }
+  let(:box) { described_class.new(name,group,filestore,request)  }
 
-  describe '#save' do
-    it 'writes to the filestore if the box does not already exist' do
-      allow(filestore).to receive(:exists?).and_return false
-      expect(filestore).to receive(:write).with('boxgroup/boxname.json', '{"description":"my description","short_description":"short desc","name":"boxgroup/boxname","versions":[]}')
 
-      box.save
+  describe '#exists?' do
+    it 'is true if the box exists' do
+      allow(filestore).to receive(:exists?).with('boxgroup/boxname').and_return true
+
+      expect(box.exists?).to be true
     end
-    it 'raises an error if saving and the box already exists' do
-      allow(filestore).to receive(:exists?).and_return true
+    it 'is false if it does not exist' do
+      allow(filestore).to receive(:exists?).with('boxgroup/boxname').and_return false
 
-      expect{box.save}.to raise_error
+      expect(box.exists?).to be false
     end
   end
 
-  describe '#update' do
-    it 'saves over the top of the current box' do
-      expect(filestore).to receive(:write).with('boxgroup/boxname.json', '{"description":"my description","short_description":"short desc","name":"boxgroup/boxname","versions":[]}')
+  describe '#to_json' do
 
-      box.update
+    let(:box_versions) { double('BoxVersions', :to_a => ['1', '2']) }
+
+    it 'returns a json representation of the box' do
+      allow(Vagrancy::BoxVersions).to receive(:new).with(box, filestore, request).and_return box_versions
+
+      expect(box.to_json).to eql "{\"name\":\"boxgroup/boxname\",\"versions\":[\"1\",\"2\"]}"
     end
   end
 
