@@ -33,6 +33,8 @@ module Vagrancy
       base_site + '/' + path 
     end
 
+    private 
+
     def base_site
       @request.scheme + '://' + @request.host + ':' + @request.port.to_s
     end
