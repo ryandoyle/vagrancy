@@ -50,7 +50,7 @@ module Vagrancy
 
     post '/api/v1/artifacts/:username/:name/vagrant.box' do
       content_type 'application/json'
-      UploadPathHandler.new(params[:name], params[:username], request).to_json
+      UploadPathHandler.new(params[:name], params[:username], request, filestore).to_json
     end
 
     get '/api/v1/artifacts/:username/:name' do

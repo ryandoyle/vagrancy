@@ -1,24 +1,26 @@
 require 'json'
+
+require 'vagrancy/box'
+require 'vagrancy/provider_box'
+
 module Vagrancy
   class UploadPathHandler
-    def initialize(name, username, request)
+    def initialize(name, username, request, filestore)
       @name = name
       @username = username
       @request = request
+      @filestore = filestore
     end
 
     def to_json
-      { :upload_path => base_site + upload_url }.to_json
+      { :upload_path => upload_path }.to_json
     end
 
     private
 
-    def base_site
-      @request.scheme + '://' + @request.host + ':' + @request.port.to_s
-    end
-
-    def upload_url
-      '/' + @username + '/' + @name  + '/' + version + '/' + provider + '/box'
+    def upload_path 
+      box = Box.new(@name, @username, @filestore, @request)
+      ProviderBox.new(provider, version, box, @filestore, @request).url
     end
 
     def version
