@@ -14,19 +14,19 @@ module Vagrancy
     end
 
     def write(stream)
-      @filestore.write(path, stream)
+      @filestore.write(file_path, stream)
     end
 
     def read
-      @filestore.read(path)
+      @filestore.read(file_path)
     end
 
     def delete
-      @filestore.delete(path) if exists?
+      @filestore.delete(file_path) if exists?
     end
 
     def exists?
-      @filestore.exists?(path)
+      @filestore.exists?(file_path)
     end
 
     def url
@@ -37,8 +37,12 @@ module Vagrancy
       @request.scheme + '://' + @request.host + ':' + @request.port.to_s
     end
 
+    def file_path
+      path + '/box'
+    end
+
     def path
-      @box.path + '/' + @version + '/' + @provider + '/box'
+      @box.path + '/' + @version + '/' + @provider
     end
 
   end

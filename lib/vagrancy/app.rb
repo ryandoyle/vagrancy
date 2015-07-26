@@ -19,7 +19,7 @@ module Vagrancy
       box.to_json if box.exists?
     end
 
-    put '/:username/:name/:version/:provider/box' do
+    put '/:username/:name/:version/:provider' do
       box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
       provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
 
@@ -27,7 +27,7 @@ module Vagrancy
       status 201
     end
 
-    get '/:username/:name/:version/:provider/box' do
+    get '/:username/:name/:version/:provider' do
       box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
       provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
 
@@ -35,7 +35,7 @@ module Vagrancy
       status provider_box.exists? ? 200 : 404
     end
 
-    delete '/:username/:name/:version/:provider/box' do
+    delete '/:username/:name/:version/:provider' do
       box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
       provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
 
