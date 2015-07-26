@@ -1,6 +1,7 @@
 require 'sinatra/base'
 
 require 'vagrancy/filestore'
+require 'vagrancy/filestore_configuration'
 require 'vagrancy/upload_path_handler'
 require 'vagrancy/box'
 require 'vagrancy/provider_box'
@@ -60,8 +61,8 @@ module Vagrancy
     end
 
     def filestore 
-      project_root = File.expand_path(File.dirname(__FILE__) + '/../../')
-      Filestore.new("#{project_root}/data/")
+      path = FilestoreConfiguration.new.path
+      Filestore.new(path)
     end
 
   end
