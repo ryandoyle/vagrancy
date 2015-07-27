@@ -44,7 +44,6 @@ namespace :package do
     create_package("osx")
   end
 
-  desc "Install gems to local directory"
   task :bundle_install do
     if RUBY_VERSION !~ /^2\.2\./
       abort "You can only 'bundle install' using Ruby 2.2, because that's what Traveling Ruby uses."
