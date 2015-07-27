@@ -10,7 +10,7 @@ PUMA_VERSION="2.11.2"
 
 desc "Run Vagrancy"
 task :run do
-  sh "bundle exec puma"
+  sh "bundle exec puma -p 8099"
 end
 
 
