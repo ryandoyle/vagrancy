@@ -8,6 +8,12 @@ VERSION = "1.0.0"
 TRAVELING_RUBY_VERSION = "20150715-2.2.2"
 PUMA_VERSION="2.11.2"
 
+desc "Run Vagrancy"
+task :run do
+  sh "bundle exec puma"
+end
+
+
 desc "Package your app"
 task :package => ['package:linux:x86', 'package:linux:x86_64', 'package:osx']
 
