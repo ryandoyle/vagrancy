@@ -28,15 +28,23 @@ module Vagrancy
     end
 
     def configuration_file_path
-      project_root + '/config.yml' 
+      application_root + '/config.yml' 
+    end
+
+    def application_root
+      File.exists?(standalone_root + '/vagrancy') ? standalone_root : project_root
+    end
+
+    def standalone_root
+      File.expand_path(File.dirname(__FILE__) + '/../../../../')
     end
 
     def project_root
-      File.expand_path(File.dirname(__FILE__) + '/../../') 
+      File.expand_path(File.dirname(__FILE__) + '/../../')
     end
 
     def default
-      project_root + '/data'
+      application_root + '/data'
     end
   end
 end
