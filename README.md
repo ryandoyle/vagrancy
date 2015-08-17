@@ -12,7 +12,7 @@ cd vagrancy-0.0.1-linux-x86_64
 ```
 ### Publishing images
 ##### Via Packer
-Add something like following to your `.json` Packer file. For Packer versions <= 0.8.2, use `server_address`, *not* `atlas_url`.
+Add something like the following to your `.json` Packer file. For Packer versions <= 0.8.2, use `server_address`, *not* `atlas_url`.
 ```
   ...
   "post-processors": [                              
