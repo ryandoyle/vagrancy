@@ -1,3 +1,5 @@
+[![Build Status](https://img.shields.io/travis/ryandoyle/vagrancy.svg)](https://travis-ci.org/ryandoyle/vagrancy)
+
 > Private Vagrant box hosting
 
 Vagrancy implments a self-hosted subset of [Atlas](https://atlas.hashicorp.com/), (formally [Vagrant Cloud](https://vagrantcloud.com)). It allows you to build images in Packer, pushlish them and then share the images with your co-workers via Vagrant, all on-premise.
