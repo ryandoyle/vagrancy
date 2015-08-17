@@ -12,7 +12,7 @@ cd vagrancy-0.0.1-linux-x86_64
 ```
 ### Publishing images
 ##### Via Packer
-Add something like following to your `.json` Packer file. Use `server_address`, *not* `atlas_url`.
+Add something like following to your `.json` Packer file. For Packer versions <= 0.8.2, use `server_address`, *not* `atlas_url`.
 ```
   ...
   "post-processors": [                              
@@ -24,7 +24,7 @@ Add something like following to your `.json` Packer file. Use `server_address`, 
       "type": "atlas",
       "artifact": "myusername/ubuntu",
       "artifact_type": "vagrant.box",
-      "server_address": "http://localhost:8099/",
+      "atlas_url": "http://localhost:8099/",
       "metadata": {
         "provider": "virtualbox",
         "version": "1.0.0"
