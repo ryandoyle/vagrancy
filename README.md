@@ -56,3 +56,7 @@ Operation| Command
 **Manually uploading a box** | `curl http://localhost:8099/myusername/ubuntu/1.0.0/virtualbox --upload-file ubuntu-precise.box`
 **Listing box versions** | `curl http://localhost:8099/myusername/ubuntu`
 **Deleting all box versions** | *Each box must be specifically deleted*
+
+### Security
+Vagrancy is intending to be used in a trusted network and hence doesn't deal with authentication. As can be see in
+the above examples, reading, writing and modifying boxes is allowed without authentication.
