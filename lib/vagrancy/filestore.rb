@@ -8,7 +8,11 @@ module Vagrancy
     end
 
     def exists?(file)
-      File.exists?("#{@base_path}#{file}")
+      File.exists?(file_path(file))
+    end
+
+    def file_path(file)
+      return "#{@base_path}#{file}"
     end
 
     def directories_in(path)
@@ -45,7 +49,8 @@ module Vagrancy
       within_file_lock(file) do
         begin 
           transaction_file = File.open("#{@base_path}#{file}.txn", File::RDWR|File::CREAT, 0644)
-          transaction_file.write(content)
+          IO.copy_stream(content,transaction_file)
+#          transaction_file.write(content)
           transaction_file.flush
           FileUtils.mv(transaction_file.path, "#{@base_path}#{file}")
         ensure

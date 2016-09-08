@@ -33,14 +33,14 @@ module Vagrancy
       base_site + '/' + path 
     end
 
+    def file_path
+      path + '/box'
+    end
+
     private 
 
     def base_site
       @request.scheme + '://' + @request.host + ':' + @request.port.to_s
-    end
-
-    def file_path
-      path + '/box'
     end
 
     def path
