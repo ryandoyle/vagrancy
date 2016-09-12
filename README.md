@@ -7,11 +7,25 @@ Vagrancy implments a self-hosted subset of [Atlas](https://atlas.hashicorp.com/)
 ### Install
 Vagrancy has all its dependencies packaged with it. It requires no runtime at all.
 ```shell
-wget https://github.com/ryandoyle/vagrancy/releases/download/0.0.1/vagrancy-0.0.1-linux-x86_64.tar.gz
-tar xvf vagrancy-0.0.1-linux-x86_64.tar.gz
-cd vagrancy-0.0.1-linux-x86_64
+wget https://github.com/ryandoyle/vagrancy/releases/download/0.0.2/vagrancy-0.0.2-linux-x86_64.tar.gz
+tar xvf vagrancy-0.0.2-linux-x86_64.tar.gz
+cd vagrancy-0.0.2-linux-x86_64
 ./vagrancy
 ```
+
+### Upgrade
+If you configured `filestore_path` in `config.yml` to a directory outside of the Vagrancy install, there's not much to do. Copy this file over from the old install and you're good to go:
+```shell
+wget https://github.com/ryandoyle/vagrancy/releases/download/0.0.2/vagrancy-0.0.2-linux-x86_64.tar.gz
+tar xvf vagrancy-0.0.2-linux-x86_64.tar.gz
+cp vagrancy-0.0.1-linux-x86_64/config.yml vagrancy-0.0.2-linux-x86_64/
+cd vagrancy-0.0.2-linux-x86_64/
+# Stop old instance of Vagrancy running before running the new one below
+./vagrancy
+```
+If you did not rename `config.sample.yml` to `config.yml` and configure this file, Vagrancy would have stored your boxes in a `data/` directory in the root of the untar-ed application. Move or copy this folder to the new install.
+
+
 ### Publishing images
 ##### Via Packer
 Add something like the following to your `.json` Packer file. For Packer versions <= 0.8.2, use `server_address`, *not* `atlas_url`.
