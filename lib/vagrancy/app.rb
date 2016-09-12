@@ -24,7 +24,7 @@ module Vagrancy
       box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
       provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
 
-      provider_box.write(request.body.read)
+      provider_box.write(request.body)
       status 201
     end
 
@@ -32,7 +32,7 @@ module Vagrancy
       box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
       provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
 
-      response.write(provider_box.read) if provider_box.exists?
+      send_file filestore.file_path(provider_box.file_path) if provider_box.exists?
       status provider_box.exists? ? 200 : 404
     end
 
