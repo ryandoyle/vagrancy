@@ -11,6 +11,10 @@ module Vagrancy
       File.exists?(file_path(file))
     end
 
+    def file_path(file)
+      "#{@base_path}#{file}"
+    end
+
     def directories_in(path)
       Dir.glob("#{@base_path}#{path}/*").select {|d| File.directory? d}.collect do |entry|
         File.basename entry
@@ -34,10 +38,6 @@ module Vagrancy
 
 
     private
-
-    def file_path(file)
-      "#{@base_path}#{file}"
-    end
 
     def with_parent_directory_created(file)
       base_directory = File.dirname("#{@base_path}#{file}")
