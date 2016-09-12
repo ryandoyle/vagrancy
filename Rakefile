@@ -91,6 +91,7 @@ def create_package(target)
   sh "mkdir -p #{package_dir}/lib/app"
   sh "cp -r config.ru config.sample.yml lib #{package_dir}/lib/app/"
   sh "cp -r config.sample.yml #{package_dir}/"
+  sh "cp -r LICENCE.txt #{package_dir}/"
   sh "mkdir #{package_dir}/lib/ruby"
   sh "tar -xzf packaging/traveling-ruby-#{TRAVELING_RUBY_VERSION}-#{target}.tar.gz -C #{package_dir}/lib/ruby"
   sh "cp packaging/wrapper.sh #{package_dir}/vagrancy"
