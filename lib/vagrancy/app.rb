@@ -6,14 +6,21 @@ require 'vagrancy/upload_path_handler'
 require 'vagrancy/box'
 require 'vagrancy/provider_box'
 require 'vagrancy/dummy_artifact'
+require 'vagrancy/helpers/param_sanitizer'
 
 module Vagrancy
   class App < Sinatra::Base
     set :logging, true
+    set :show_exceptions, :after_handler
+    helpers Vagrancy::Helpers::ParamSanitizer
 
+    error Vagrancy::Helpers::InvalidParameterName do
+      status 400
+      env['sinatra.error'].message
+    end
 
     get '/:username/:name' do
-      box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
+      box = Vagrancy::Box.new(sanitised_param(:name), sanitised_param(:username), filestore, request)
 
       status box.exists? ? 200 : 404
       content_type 'application/json'
@@ -21,24 +28,24 @@ module Vagrancy
     end
 
     put '/:username/:name/:version/:provider' do
-      box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
-      provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
+      box = Vagrancy::Box.new(sanitised_param(:name), sanitised_param(:username), filestore, request)
+      provider_box = ProviderBox.new(sanitised_param(:provider), sanitised_param(:version), box, filestore, request)
 
       provider_box.write(request.body)
       status 201
     end
 
     get '/:username/:name/:version/:provider' do
-      box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
-      provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
+      box = Vagrancy::Box.new(sanitised_param(:name), sanitised_param(:username), filestore, request)
+      provider_box = ProviderBox.new(sanitised_param(:provider), sanitised_param(:version), box, filestore, request)
 
       send_file filestore.file_path(provider_box.file_path) if provider_box.exists?
       status provider_box.exists? ? 200 : 404
     end
 
     delete '/:username/:name/:version/:provider' do
-      box = Vagrancy::Box.new(params[:name], params[:username], filestore, request)
-      provider_box = ProviderBox.new(params[:provider], params[:version], box, filestore, request)
+      box = Vagrancy::Box.new(sanitised_param(:name), sanitised_param(:username), filestore, request)
+      provider_box = ProviderBox.new(sanitised_param(:provider), sanitised_param(:version), box, filestore, request)
 
       status provider_box.exists? ? 200 : 404
       provider_box.delete
@@ -51,7 +58,7 @@ module Vagrancy
 
     post '/api/v1/artifacts/:username/:name/vagrant.box' do
       content_type 'application/json'
-      UploadPathHandler.new(params[:name], params[:username], request, filestore).to_json
+      UploadPathHandler.new(sanitised_param(:name), sanitised_param(:username), request, filestore).to_json
     end
 
     get '/api/v1/artifacts/:username/:name' do
