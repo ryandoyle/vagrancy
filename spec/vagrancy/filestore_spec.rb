@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 require 'vagrancy/filestore'
+require 'vagrancy/invalid_file_path'
 
 describe Vagrancy::Filestore do 
 
@@ -16,6 +17,20 @@ describe Vagrancy::Filestore do
 
       expect(filestore.exists?("file_that_doesnt_exist.txt")).to be false
     end
+
+    it "raises an error if the path is not contained in the filestore" do
+      expect{filestore.exists?('../outside_basedir')}.to raise_error Vagrancy::InvalidFilePath
+    end
+  end
+
+  describe '#file_path' do
+    it 'returns the absolute file path' do
+      expect(filestore.file_path('somefile')).to eq '/root/somefile'
+    end
+
+    it 'raises an error if the path is not contained in the filestore' do
+      expect{filestore.file_path('../outside_basedir')}.to raise_error Vagrancy::InvalidFilePath
+    end
   end
 
   describe '#directories_in' do
@@ -27,6 +42,11 @@ describe Vagrancy::Filestore do
 
       expect(filestore.directories_in("dir")).to eq ['1', '2']
     end
+
+    it "raises an error if the path is not contained in the filestore" do
+      expect{filestore.directories_in('../outside_basedir')}.to raise_error Vagrancy::InvalidFilePath
+    end
+
   end
 
   describe '#read' do
@@ -34,6 +54,10 @@ describe Vagrancy::Filestore do
       expect(File).to receive(:read).with('/root/file.txt')
 
       filestore.read('file.txt')
+    end
+
+    it 'raises an error if the file path is not contained in the filestore' do
+      expect{filestore.read('../outside_basedir')}.to raise_error Vagrancy::InvalidFilePath
     end
   end
 
@@ -43,10 +67,18 @@ describe Vagrancy::Filestore do
 
       filestore.delete('file.txt')
     end
+
+    it 'raises an error if the file path is not contained in the filestore' do
+      expect{filestore.delete('../outside_basedir')}.to raise_error Vagrancy::InvalidFilePath
+    end
   end
 
 
   describe '#write' do
+
+    it 'raises an error if the file path is not contained in the filestore' do
+      expect{filestore.write('../outside_basedir', double('stream'))}.to raise_error Vagrancy::InvalidFilePath
+    end
     
     describe 'parent directories' do
 

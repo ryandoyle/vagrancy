@@ -6,10 +6,17 @@ require 'vagrancy/upload_path_handler'
 require 'vagrancy/box'
 require 'vagrancy/provider_box'
 require 'vagrancy/dummy_artifact'
+require 'vagrancy/invalid_file_path'
 
 module Vagrancy
   class App < Sinatra::Base
     set :logging, true
+    set :show_exceptions, :after_handler
+
+    error Vagrancy::InvalidFilePath do
+      status 403
+      env['sinatra.error'].message
+    end
 
 
     get '/:username/:name' do
