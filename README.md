@@ -7,19 +7,19 @@ Vagrancy implments a self-hosted subset of [Atlas](https://atlas.hashicorp.com/)
 ### Install
 Vagrancy has all its dependencies packaged with it. It requires no runtime at all.
 ```shell
-wget https://github.com/ryandoyle/vagrancy/releases/download/0.0.3/vagrancy-0.0.3-linux-x86_64.tar.gz
-tar xvf vagrancy-0.0.3-linux-x86_64.tar.gz
-cd vagrancy-0.0.3-linux-x86_64
+wget https://github.com/ryandoyle/vagrancy/releases/download/0.0.4/vagrancy-0.0.4-linux-x86_64.tar.gz
+tar xvf vagrancy-0.0.4-linux-x86_64.tar.gz
+cd vagrancy-0.0.4-linux-x86_64
 ./vagrancy
 ```
 
 ### Upgrade
 If you configured `filestore_path` in `config.yml` to a directory outside of the Vagrancy install, there's not much to do. Copy this file over from the old install and you're good to go:
 ```shell
-wget https://github.com/ryandoyle/vagrancy/releases/download/0.0.3/vagrancy-0.0.3-linux-x86_64.tar.gz
-tar xvf vagrancy-0.0.3-linux-x86_64.tar.gz
-cp vagrancy-0.0.2-linux-x86_64/config.yml vagrancy-0.0.3-linux-x86_64/
-cd vagrancy-0.0.3-linux-x86_64/
+wget https://github.com/ryandoyle/vagrancy/releases/download/0.0.4/vagrancy-0.0.4-linux-x86_64.tar.gz
+tar xvf vagrancy-0.0.4-linux-x86_64.tar.gz
+cp vagrancy-3-linux-x86_64/config.yml vagrancy-0.0.4-linux-x86_64/
+cd vagrancy-0.0.4-linux-x86_64/
 # Stop old instance of Vagrancy running before running the new one below
 ./vagrancy
 ```
